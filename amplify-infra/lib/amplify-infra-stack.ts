@@ -30,19 +30,26 @@ export class AmplifyInfraStack extends cdk.Stack {
             }
           },
           artifacts: {
-            baseDirectory: "build",
+            baseDirectory: "bui",
             files: "**/*"
           },
           cache: {
             paths: "node_modules/**/*"
           }
         }
-      }),
-      environmentVariables: {
-        framework: "React"
-      }
+      })
     });
 
     const masterBranch = amplifyApp.addBranch("master");
+
+    amplifyApp.addCustomRule(
+      amplify.CustomRule.SINGLE_PAGE_APPLICATION_REDIRECT
+    );
+
+    amplifyApp.addCustomRule({
+      source: "/<*>",
+      target: "/index.html",
+      status: amplify.RedirectStatus.NOT_FOUND
+    });
   }
 }
