@@ -16,40 +16,22 @@ export class AmplifyInfraStack extends cdk.Stack {
         oauthToken: cdk.SecretValue.secretsManager("full-stack-dashboard", {
           jsonField: "full-stack-dashboard"
         })
-      }),
-      buildSpec: codebuild.BuildSpec.fromObject({
-        // Alternatively add a `amplify.yml` to the repo
-        version: "1.0",
-        frontend: {
-          phases: {
-            preBuild: {
-              commands: "yarn install"
-            },
-            build: {
-              commands: "yarn run build"
-            }
-          },
-          artifacts: {
-            baseDirectory: "bui",
-            files: "**/*"
-          },
-          cache: {
-            paths: "node_modules/**/*"
-          }
-        }
       })
     });
 
     const masterBranch = amplifyApp.addBranch("master");
 
-    amplifyApp.addCustomRule(
-      amplify.CustomRule.SINGLE_PAGE_APPLICATION_REDIRECT
-    );
-
     amplifyApp.addCustomRule({
       source: "/<*>",
       target: "/index.html",
-      status: amplify.RedirectStatus.NOT_FOUND
+      status: amplify.RedirectStatus.NOT_FOUND_REWRITE
+    });
+
+    amplifyApp.addCustomRule({
+      source:
+        "</^[^.]+$|.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|ttf|map|json)$)([^.]+$)/>",
+      target: "/index.html",
+      status: amplify.RedirectStatus.REWRITE
     });
   }
 }
