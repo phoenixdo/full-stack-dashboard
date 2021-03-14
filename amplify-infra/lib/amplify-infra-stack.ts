@@ -22,7 +22,7 @@ export class AmplifyInfraStack extends cdk.Stack {
         frontend: {
           phases: {
             preBuild: {
-              commands: ["npm install"]
+              commands: ["npm ci"]
             },
             build: {
               commands: ["npm run build"]
