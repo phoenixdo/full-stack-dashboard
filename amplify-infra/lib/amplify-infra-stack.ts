@@ -18,23 +18,22 @@ export class AmplifyInfraStack extends cdk.Stack {
         })
       }),
       buildSpec: codebuild.BuildSpec.fromObject({
-        // Alternatively add a `amplify.yml` to the repo
-        version: "1.0",
+        version: 1,
         frontend: {
           phases: {
             preBuild: {
-              commands: "yarn install"
+              commands: ["yarn install"]
             },
             build: {
-              commands: "yarn run build"
+              commands: ["yarn run build"]
             }
           },
           artifacts: {
-            baseDirectory: "public",
-            files: "**/*"
+            baseDirectory: "build",
+            files: ["**/*"]
           },
           cache: {
-            paths: "node_modules/**/*"
+            paths: ["node_modules/**/*"]
           }
         }
       })
