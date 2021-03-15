@@ -16,26 +16,6 @@ export class AmplifyInfraStack extends cdk.Stack {
         oauthToken: cdk.SecretValue.secretsManager("full-stack-dashboard", {
           jsonField: "full-stack-dashboard"
         })
-      }),
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: 1,
-        frontend: {
-          phases: {
-            preBuild: {
-              commands: ["npm install"]
-            },
-            build: {
-              commands: ["npm run build"]
-            }
-          },
-          artifacts: {
-            baseDirectory: "build",
-            files: ["**/*"]
-          },
-          cache: {
-            paths: ["node_modules/**/*"]
-          }
-        }
       })
     });
 
